@@ -1,5 +1,6 @@
 package com.in28minutes.rest.webservies.restful_web_services.user;
 
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -23,7 +24,7 @@ public class UserResource {
         return service.findAll();
     }
 
-    //Get/users_specific    in java{} this is used to take value for a given variable if in path then it is path variable
+    //Get/users_specific    in java{} this is used to take value for a given variable if in path then it is path variable //this is our retrieve user method
     @GetMapping("/users/{id}")
     public User retrieveUser(@PathVariable int id) {
         User user = service.findOne(id);
@@ -33,9 +34,17 @@ public class UserResource {
         return user;
     }
 
+    //delete/users_specific    in java{} this is used to delete value for a given variable(here it is ID) if in path then it is path variable //this is our delete user method which will delete
+    @DeleteMapping("/users/{id}")
+    public void deleteUser(@PathVariable int id) {
+        //using service function to delete the object whose return type is void hence is not getting stored in any variable
+        service.deleteById(id);
+        //if it is successful you will get 200 response.
+    }
+
     //Post/users
     @PostMapping("/users")
-    public ResponseEntity<User> createUser(@RequestBody User user){
+    public ResponseEntity<User> createUser(@Valid @RequestBody User user){
         User savedUser = service.save(user);
         //spring boot provided the http status hence we have to use the accurate function over which httpresponse will be updated.
         //return ResponseEntity.created(null).build(); it will just add as location is null but if we need to know what has been added as uri then

@@ -1,4 +1,7 @@
 //DAO  data access object here it is UserDAOService//node js main ye service hain
+//based on the schema of incoming data functions are derived in service which will be used in controller.
+//model of data(module or interface or class) is imported in service and then service is imported in controller.
+//service will have DAO functions, data accessing functions, controller will have means to call the service hence controller is not DAO.
 package com.in28minutes.rest.webservies.restful_web_services.user;
 
 import org.springframework.stereotype.Component;
@@ -41,6 +44,7 @@ public class UserDaoService {
         return user;
     }
 
+    //we are finding here user hence we have provided it return type of User class
     public User findOne(int id) {
         //predicate variable is having predicate type (it is a function whose type here we have defined as constructor of User class) passed with user as argument and then in body
         //we are comparing the incoming user if with the id passed of findOne function
@@ -49,6 +53,15 @@ public class UserDaoService {
         //and filter according to predicate function variable and then fetch.
         return users.stream().filter(predicate).findFirst().orElse(null);
         //if get will be there in place of orElse then it will either fetch or throw no such element exception
+    }
+
+    //we just want to delete hence we do not need to give type and hence void is our return type.
+    //DAO is having delete method ready now when we receive instructions to delete we will use this function in our controller.
+    public void deleteById(int id) {
+        //match by id logic
+        Predicate<?super User> predicate = user -> user.getId().equals(id);
+        //if it matches remove the user
+        users.removeIf(predicate);
     }
 
 }
